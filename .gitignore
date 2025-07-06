@@ -1,0 +1,39 @@
+# Java/Maven
+**/target/
+**/logs/
+*.log
+*.class
+*.jar
+*.war
+*.iml
+.DS_Store
+
+# Node/React
+Frontend/node_modules/
+Frontend/dist/
+Frontend/.env
+
+# VSCode
+.vscode/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Misc
+.env
+*.swp
+*.swo
+*.bak
+
+# IDEs
+.idea/
+*.ipr
+*.iws
+*.bak
+
+# Scripts
+scripts/*.log
+
+# Ignore test output
+**/test-classes/

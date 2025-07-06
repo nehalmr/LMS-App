@@ -80,41 +80,71 @@ public class NotificationController {
 
     @PostMapping("/due-reminder")
     @Operation(summary = "Create due reminder", description = "Create a due reminder notification")
-    public ResponseEntity<NotificationDTO> createDueReminder(@RequestBody Map<String, Object> request) {
-        Long memberId = Long.valueOf(request.get("memberId").toString());
-        String memberEmail = request.get("memberEmail").toString();
-        String bookTitle = request.get("bookTitle").toString();
-        String dueDate = request.get("dueDate").toString();
-
-        NotificationDTO notification = notificationService.createDueReminderNotification(
-                memberId, memberEmail, bookTitle, dueDate);
-        return ResponseEntity.status(HttpStatus.CREATED).body(notification);
+    public ResponseEntity<?> createDueReminder(@RequestBody Map<String, Object> request) {
+        if (request.get("memberId") == null || request.get("memberEmail") == null ||
+            request.get("bookTitle") == null || request.get("dueDate") == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Missing required fields: memberId, memberEmail, bookTitle, dueDate are required."));
+        }
+        try {
+            Long memberId = Long.valueOf(request.get("memberId").toString());
+            String memberEmail = request.get("memberEmail").toString();
+            String bookTitle = request.get("bookTitle").toString();
+            String dueDate = request.get("dueDate").toString();
+            if (memberId <= 0 || memberEmail.isBlank() || bookTitle.isBlank() || dueDate.isBlank()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Invalid or blank field(s) in request."));
+            }
+            NotificationDTO notification = notificationService.createDueReminderNotification(
+                    memberId, memberEmail, bookTitle, dueDate);
+            return ResponseEntity.status(HttpStatus.CREATED).body(notification);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid input: " + e.getMessage()));
+        }
     }
 
     @PostMapping("/overdue-alert")
     @Operation(summary = "Create overdue alert", description = "Create an overdue book alert notification")
-    public ResponseEntity<NotificationDTO> createOverdueAlert(@RequestBody Map<String, Object> request) {
-        Long memberId = Long.valueOf(request.get("memberId").toString());
-        String memberEmail = request.get("memberEmail").toString();
-        String bookTitle = request.get("bookTitle").toString();
-        Integer overdueDays = Integer.valueOf(request.get("overdueDays").toString());
-
-        NotificationDTO notification = notificationService.createOverdueNotification(
-                memberId, memberEmail, bookTitle, overdueDays);
-        return ResponseEntity.status(HttpStatus.CREATED).body(notification);
+    public ResponseEntity<?> createOverdueAlert(@RequestBody Map<String, Object> request) {
+        if (request.get("memberId") == null || request.get("memberEmail") == null ||
+            request.get("bookTitle") == null || request.get("overdueDays") == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Missing required fields: memberId, memberEmail, bookTitle, overdueDays are required."));
+        }
+        try {
+            Long memberId = Long.valueOf(request.get("memberId").toString());
+            String memberEmail = request.get("memberEmail").toString();
+            String bookTitle = request.get("bookTitle").toString();
+            Integer overdueDays = Integer.valueOf(request.get("overdueDays").toString());
+            if (memberId <= 0 || memberEmail.isBlank() || bookTitle.isBlank() || overdueDays < 0) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Invalid or blank field(s) in request."));
+            }
+            NotificationDTO notification = notificationService.createOverdueNotification(
+                    memberId, memberEmail, bookTitle, overdueDays);
+            return ResponseEntity.status(HttpStatus.CREATED).body(notification);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid input: " + e.getMessage()));
+        }
     }
 
     @PostMapping("/fine-notice")
     @Operation(summary = "Create fine notice", description = "Create a fine notice notification")
-    public ResponseEntity<NotificationDTO> createFineNotice(@RequestBody Map<String, Object> request) {
-        Long memberId = Long.valueOf(request.get("memberId").toString());
-        String memberEmail = request.get("memberEmail").toString();
-        String bookTitle = request.get("bookTitle").toString();
-        String fineAmount = request.get("fineAmount").toString();
-
-        NotificationDTO notification = notificationService.createFineNotification(
-                memberId, memberEmail, bookTitle, fineAmount);
-        return ResponseEntity.status(HttpStatus.CREATED).body(notification);
+    public ResponseEntity<?> createFineNotice(@RequestBody Map<String, Object> request) {
+        if (request.get("memberId") == null || request.get("memberEmail") == null ||
+            request.get("bookTitle") == null || request.get("fineAmount") == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Missing required fields: memberId, memberEmail, bookTitle, fineAmount are required."));
+        }
+        try {
+            Long memberId = Long.valueOf(request.get("memberId").toString());
+            String memberEmail = request.get("memberEmail").toString();
+            String bookTitle = request.get("bookTitle").toString();
+            String fineAmount = request.get("fineAmount").toString();
+            if (memberId <= 0 || memberEmail.isBlank() || bookTitle.isBlank() || fineAmount.isBlank()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Invalid or blank field(s) in request."));
+            }
+            NotificationDTO notification = notificationService.createFineNotification(
+                    memberId, memberEmail, bookTitle, fineAmount);
+            return ResponseEntity.status(HttpStatus.CREATED).body(notification);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid input: " + e.getMessage()));
+        }
     }
 
     @GetMapping("/stats")
